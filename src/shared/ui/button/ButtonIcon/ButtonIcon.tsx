@@ -8,7 +8,7 @@ interface ButtonIconsProps {
   loading?: boolean;
   color?: 'default' | 'primary' | 'danger' | 'blue';
   disabled?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const ButtonIcon = ({
