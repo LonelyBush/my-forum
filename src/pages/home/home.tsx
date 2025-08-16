@@ -22,10 +22,10 @@ export const Home = () => {
           size="large"
           type="button"
           onClick={() => {
-            navigate('/posts');
+            navigate('/forum');
           }}
         >
-          To Posts
+          To Forum
         </ButtonPrimary>
         <ButtonPrimary
           size="large"

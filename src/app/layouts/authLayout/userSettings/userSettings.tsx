@@ -1,12 +1,16 @@
-import { SettingOutlined } from '@ant-design/icons';
-import { Button, Dropdown, Flex } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Dropdown, Flex } from 'antd';
 import { noAuthItems } from './settings';
 
 export const UserSettings = () => {
   return (
     <Flex gap="middle" align="center">
       <Dropdown menu={{ items: noAuthItems }} trigger={['click']}>
-        <Button size="middle" shape="circle" icon={<SettingOutlined />} />
+        <Avatar
+          size={40}
+          icon={<UserOutlined />}
+          style={{ cursor: 'pointer' }}
+        ></Avatar>
       </Dropdown>
     </Flex>
   );

@@ -11,10 +11,6 @@ export const Navigation = () => {
       <Button size="middle" shape="circle" icon={<MenuOutlined />} />
     </Dropdown>
   ) : (
-    <Menu
-      style={{ minWidth: 0, flex: 'auto', width: '100%' }}
-      mode="horizontal"
-      items={navItems}
-    />
+    <Menu mode="horizontal" items={navItems} />
   );
 };

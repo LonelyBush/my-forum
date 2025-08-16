@@ -1,7 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { forumApi } from '../api/forumApi';
 
 export const store = configureStore({
-  reducer: () => {},
+  reducer: {
+    [forumApi.reducerPath]: forumApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(forumApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

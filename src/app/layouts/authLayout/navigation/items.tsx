@@ -9,8 +9,8 @@ export const navItems: MenuProps['items'] = [
     icon: <HomeFilled twoToneColor="#fafafa" />,
   },
   {
-    label: <NavLink to="/posts">Posts</NavLink>,
-    key: 'posts',
+    label: <NavLink to="/forum">Forum</NavLink>,
+    key: 'forum',
     icon: <MessageOutlined twoToneColor="#fafafa" />,
   },
 ];
