@@ -4,17 +4,22 @@ import { Post } from '../../entities/post/post';
 import style from './forum.module.css';
 import { useGetAllPostsQuery } from '../../app/api/forumApi';
 import { useSearchParams } from 'react-router';
+import { FilterByUsers } from '../../shared/components/filters/forumFilters';
 
 export const Forum = () => {
   const pageSize = 10;
-  const { data: posts, isLoading } = useGetAllPostsQuery();
+  const { data: posts } = useGetAllPostsQuery();
   const [searchParams] = useSearchParams();
   const currentPage = Number(searchParams.get('page')) || 1;
+  const currentUser = Number(searchParams.get('userId')) || null;
 
+  const filteredPosts = !currentUser
+    ? posts
+    : posts?.filter((el) => currentUser === el.userId);
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
-  const paginatedPosts = posts?.slice(startIndex, endIndex) ?? [];
+  const paginatedPosts = filteredPosts?.slice(startIndex, endIndex) ?? [];
 
   return (
     <Flex
@@ -23,12 +28,24 @@ export const Forum = () => {
       flex="1"
       className={style.forumContainer}
     >
-      <Flex wrap gap="middle" justify="center" className={style.postsContainer}>
-        {isLoading ? (
+      <FilterByUsers />
+      <Flex
+        wrap
+        gap="middle"
+        justify="flex-start"
+        className={style.postsContainer}
+      >
+        {filteredPosts === undefined ? (
           <Spin size="large" />
-        ) : posts !== undefined ? (
-          paginatedPosts.map(({ title, body, id }) => (
-            <Post key={`${title}_${id}`} id={id} title={title} body={body} />
+        ) : filteredPosts.length > 0 ? (
+          paginatedPosts.map(({ title, body, id, userName }) => (
+            <Post
+              key={`${title}_${id}`}
+              id={id}
+              title={title}
+              body={body}
+              userName={userName}
+            />
           ))
         ) : (
           <Empty />
@@ -36,7 +53,7 @@ export const Forum = () => {
       </Flex>
       <CustomPagination
         pageSize={pageSize}
-        dataLength={posts ? posts.length : 0}
+        dataLength={filteredPosts ? filteredPosts.length : 0}
       />
     </Flex>
   );

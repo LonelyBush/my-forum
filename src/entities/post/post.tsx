@@ -1,24 +1,43 @@
-import { Card, Typography } from 'antd';
+import { Avatar, Card, Divider, Flex, Space, Typography } from 'antd';
 import style from './post.module.css';
 import { NavLink } from 'react-router';
+import { UserOutlined } from '@ant-design/icons';
 
-const { Text } = Typography;
+const { Paragraph, Text } = Typography;
 
 interface PostsProps {
   id: number;
   title: string;
   body: string;
+  userName: string;
 }
 
-export const Post = ({ title, body, id }: PostsProps) => {
-
+export const Post = ({ title, body, id, userName }: PostsProps) => {
   return (
     <Card
       className={style.postContainer}
       title={title}
       extra={<NavLink to={`/forum/${id}`}>More</NavLink>}
     >
-      <Text ellipsis>{body}</Text>
+      <Paragraph
+        ellipsis={{
+          rows: 3,
+        }}
+        style={{ margin: 0 }}
+      >
+        {body}
+      </Paragraph>
+      <Flex vertical>
+        <Divider />
+        <Space size="middle">
+          <Avatar
+            size={40}
+            icon={<UserOutlined />}
+            style={{ cursor: 'pointer' }}
+          />
+          <Text>{userName}</Text>
+        </Space>
+      </Flex>
     </Card>
   );
 };

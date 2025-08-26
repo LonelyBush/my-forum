@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { type Posts } from '../interfaces/api';
+import { type Posts, type User } from '../interfaces/api';
 
 export const forumApi = createApi({
   reducerPath: 'forumApi',
@@ -8,7 +8,25 @@ export const forumApi = createApi({
   }),
   endpoints: (build) => ({
     getAllPosts: build.query<Posts[], void>({
-      query: () => `posts`,
+      async queryFn(arg, queryApi, extraOptions, baseQuery) {
+        const postsResult = await baseQuery('posts');
+        if (postsResult.error) {
+          return { error: postsResult.error };
+        }
+        const posts = postsResult.data as Posts[];
+
+        const usersResult = await baseQuery('users');
+        const users = usersResult.data as User[];
+        const enhancedPosts = users
+          ? posts.map((post) => ({
+              ...post,
+              userName:
+                users.find((user) => user.id === post.userId)?.username ?? '',
+            }))
+          : posts;
+
+        return { data: enhancedPosts };
+      },
     }),
     getPost: build.query<Posts, string>({
       query: (num) => `posts/${num}`,
@@ -19,6 +37,9 @@ export const forumApi = createApi({
     getPostByUserId: build.query<Posts, string>({
       query: (num) => `posts?userId=${num}`,
     }),
+    getAllUsers: build.query<User[], void>({
+      query: () => `users`,
+    }),
   }),
 });
 
@@ -27,4 +48,5 @@ export const {
   useGetPostQuery,
   useGetPostCommentsQuery,
   useGetPostByUserIdQuery,
+  useGetAllUsersQuery,
 } = forumApi;

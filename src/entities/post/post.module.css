@@ -1,4 +1,6 @@
 .postContainer {
-    min-height: 180px;
-    max-width: 520px;
+    display: flex;
+    flex-direction: column;
+    min-height: 250px;
+    max-width: 440px;
 }
